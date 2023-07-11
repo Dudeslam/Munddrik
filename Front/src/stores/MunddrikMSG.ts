@@ -1,13 +1,12 @@
 import { inject } from "vue";
 import { defineStore } from "pinia";
-import csv from "./Munddrik.tsv";
 export interface msg {
   Message: string;
   AllMessage: string[];
   Munddrik: string[];
   first: boolean;
 }
-const $papa = inject("$papa");
+
 export const useMunddrikStore = defineStore({
   id: "Munddrik",
   state: (): msg => ({
@@ -19,7 +18,7 @@ export const useMunddrikStore = defineStore({
   actions: {
     async loadMovies() {
       await fetch("./Munddrik.txt").then((x) => x.text);
-      csv.forEach((element) => {
+      csv.forEach((element: { [s: string]: unknown; } | ArrayLike<unknown>) => {
         this.AllMessage.push(Object.values(element).toString());
       });
       const valuest = Object.values(csv);

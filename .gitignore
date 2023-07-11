@@ -29,3 +29,6 @@ coverage
 *.sln
 *.sw?
 
+/Front/node_modules
+/Back/node_modules
+
