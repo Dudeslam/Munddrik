@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMunddrikStore } from '@/stores/MunddrikMSG';
+import { useMunddrikStore } from '../stores/MunddrikMSG';
 const Munddrik = useMunddrikStore();
 </script>
 

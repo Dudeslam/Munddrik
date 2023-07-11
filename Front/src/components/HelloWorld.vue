@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import refreshIcon from "./icons/refreshIcon.vue"
 import DrinkIcon from "./icons/DrinkIcon.vue"
-import { useMunddrikStore } from "@/stores/MunddrikMSG";
+import { useMunddrikStore } from "../stores/MunddrikMSG.ts";
 
 const MunddrikStore = useMunddrikStore();
 defineProps<{
   msg: string
 }>()
 
-MunddrikStore.loadMovies();
+MunddrikStore.loadDataFiles();
 
 </script>
 
@@ -19,7 +19,7 @@ MunddrikStore.loadMovies();
     <button type="button" onmouseover="" class="btn" @click="MunddrikStore.roll"><refreshIcon/></button>
   </div>
   <h3>
-      Drikke spille hvor man hælder i munden eller laver noget andet!
+      Drikke spillet hvor man hælder i munden eller laver noget andet!
     </h3>
 </template>
 

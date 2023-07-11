@@ -1,9 +1,12 @@
-import { inject } from "vue";
+import axios from "axios";
 import { defineStore } from "pinia";
 export interface msg {
   Message: string;
   AllMessage: string[];
   Munddrik: string[];
+  UsedMsg: string[];
+  Files: string[];
+  MsgSize: number;
   first: boolean;
 }
 
@@ -12,24 +15,42 @@ export const useMunddrikStore = defineStore({
   state: (): msg => ({
     Message: "",
     AllMessage: [],
+    UsedMsg: [],
+    Files: [],
+    MsgSize: 0,
     Munddrik: ["Bund din drik!!!!", "Du vælger en som skal bunde!!!!"],
     first: true,
   }),
   actions: {
-    async loadMovies() {
-      await fetch("./Munddrik.txt").then((x) => x.text);
-      csv.forEach((element: { [s: string]: unknown; } | ArrayLike<unknown>) => {
-        this.AllMessage.push(Object.values(element).toString());
-      });
-      const valuest = Object.values(csv);
-      if (this.first) {
-        this.roll();
-        this.first = false;
-      }
+    async loadDataFiles() {
+      await axios.get("/getFiles").then((resp)=> {
+        let csv = resp.data;
+        csv.forEach((element: { [s: string]: unknown; } | ArrayLike<unknown>) => {
+          this.Files.push(Object.values(element).toString());
+        });
+      })
     },
+    async loadFile(name: string){
+      await axios.get(`/getFile/${name}`).then((resp)=>{
+        let data = resp.data;
+        this.MsgSize = data.length;
+        data.forEach((element: ArrayLike<unknown> | { [s: string]: unknown; }) =>{
+          this.AllMessage.push(Object.values(element).toString());
+        })
+        if (this.first) {
+          this.roll();
+          this.first = false;
+        }
+      })
+    },    
     roll() {
       const rand = Math.round(Math.random() * this.AllMessage.length);
       this.Message = this.AllMessage[rand];
+      this.UsedMsg.push(this.AllMessage[rand]);
+      delete this.AllMessage[rand];
+      if(this.UsedMsg.length >= this.MsgSize/2){
+        this.AllMessage = this.AllMessage.concat(this.UsedMsg);
+      }
     },
     haeld() {
       let rand = Math.round((Math.random() * 100) % 2);
