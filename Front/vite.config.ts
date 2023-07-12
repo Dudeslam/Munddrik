@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     port: 8081,
-    host: 'localhost'
+    host: '0.0.0.0'
   },
   
   resolve: {
@@ -18,8 +18,16 @@ export default defineConfig({
     // generate manifest.json in outDir
     manifest: true,
     rollupOptions: {
-      // overwrite default .html entry
-      input: '/workspaces/Munddrik/Back/index.js',
-    },
+      // make sure to externalize deps that shouldn't be bundled
+      // into your library
+      external: ['vue'],
+      output: {
+        // Provide global variables to use in the UMD build
+        // for externalized deps
+        globals: {
+          vue: 'Vue'
+        }
+      }
+    }
   },
 })
