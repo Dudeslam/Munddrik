@@ -8,7 +8,6 @@ defineProps<{
   msg: string
 }>()
 
-MunddrikStore.loadDataFiles();
 
 </script>
 
