@@ -72,6 +72,7 @@ nav a:first-of-type {
     place-items: flex-start;
     flex-wrap: wrap;
     justify-content: center !important;
+    background-color: white;
   }
 
   nav {
