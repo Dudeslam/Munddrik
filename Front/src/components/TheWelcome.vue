@@ -38,7 +38,7 @@ onMounted(()=>{
   :hover{
     transition: 0.5s;
     background-color: rgb(0, 255, 147);
-    color: black;
+    // color: black;
   }
 }
 
