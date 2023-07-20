@@ -3,11 +3,12 @@ kind: Deployment
 metadata:
   annotations:
     kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert
-    kompose.version: 1.29.0 (997957870)
+    kompose.version: 1.30.0 (9d8dcb518)
   creationTimestamp: null
   labels:
     io.kompose.service: backend
   name: backend
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -18,18 +19,41 @@ spec:
     metadata:
       annotations:
         kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert
-        kompose.version: 1.29.0 (997957870)
+        kompose.version: 1.30.0 (9d8dcb518)
       creationTimestamp: null
       labels:
-        io.kompose.network/munddrik-default: "true"
+        io.kompose.network/charts-default: "true"
         io.kompose.service: backend
     spec:
       containers:
-        - image: vinhtrung/backend:v1
-          imagePullPolicy: IfNotPresent
+        - image: vinhtrung/backend:v3
           name: backend-docker
           ports:
             - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
           resources: {}
+          imagePullPolicy: Always
       restartPolicy: Always
 status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe convert
+    kompose.version: 1.30.0 (9d8dcb518)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: backend
+  name: backend
+  namespace: default
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+  selector:
+    io.kompose.service: backend
+status:
+  loadBalancer: {}

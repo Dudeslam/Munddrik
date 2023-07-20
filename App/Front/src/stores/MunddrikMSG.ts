@@ -1,5 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+axios.defaults.withCredentials = false;
 export interface msg {
   Message: string;
   AllMessage: string[];
@@ -23,7 +24,7 @@ export const useMunddrikStore = defineStore({
   }),
   actions: {
     async loadDataFiles() {
-      await axios.get("/getFiles").then((resp)=> {
+      await axios.get("http://localhost:8080/getFiles").then((resp)=> {
         let csv = resp.data;
         csv.forEach((element: { [s: string]: unknown; } | ArrayLike<unknown>) => {
           this.Files.push(Object.values(element).toString());
@@ -31,7 +32,7 @@ export const useMunddrikStore = defineStore({
       })
     },
     async loadFile(name: string){
-      await axios.get(`/getFile/${name}`).then((resp)=>{
+      await axios.get(`http://localhost:8080/getFile/${name}`).then((resp)=>{
         let data = resp.data;
         this.MsgSize = data.length;
         data.forEach((element: ArrayLike<unknown> | { [s: string]: unknown; }) =>{

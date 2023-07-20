@@ -4,7 +4,17 @@ import vue from "@vitejs/plugin-vue";
 import { fileURLToPath } from "url";
 var vite_config_default = defineConfig({
   plugins: [vue()],
+  devServer:{
+    proxy:{
+      '/getFiles' :{
+        target: 'https://localhost:8080',
+        changeOrigin: true,
+        secure: false,
+        ws: false,
+      }
+  },
   server: {
+
     port: 8081,
     host: "localhost"
   },
@@ -12,7 +22,7 @@ var vite_config_default = defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./src", "file:///workspaces/Munddrik/Front/vite.config.ts"))
     }
-  }
+  }}
 });
 export {
   vite_config_default as default

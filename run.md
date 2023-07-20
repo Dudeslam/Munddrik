@@ -7,17 +7,11 @@
 
 ## apply script
     kubectl apply -f .\backend-deployment.yaml 
-    kubectl apply -f .\frontend-deployment.yaml 
-    kubectl apply -f .\frontend-service.yaml 
-    kubectl apply -f .\backend-service.yaml 
-    kubectl apply -f .\munddrik-default-networkpolicy.yaml 
+    kubectl apply -f .\frontend-deployment.yaml  
 
 ## stop and delete script
     kubectl delete -f .\backend-deployment.yaml 
     kubectl delete -f .\frontend-deployment.yaml 
-    kubectl delete -f .\frontend-service.yaml 
-    kubectl delete -f .\backend-service.yaml 
-    kubectl delete -f .\munddrik-default-networkpolicy.yaml 
 
 
 ## forward port to test locally

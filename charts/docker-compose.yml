@@ -2,7 +2,7 @@ version: '3'
 
 services:
   frontend: # Name of our service
-    build: ./Front # path to dockerfile
+    build: ../App/Front # path to dockerfile
     ports: # Port binding to host from docker container
       - "8081:8081" # Bind port 3000 of host to 3000 of container
     container_name: frontend-docker
@@ -11,7 +11,7 @@ services:
       - backend
 
   backend:
-    build: ./Back
+    build: ../App/Back
     ports: 
       - "8080:8080"
     container_name: backend-docker

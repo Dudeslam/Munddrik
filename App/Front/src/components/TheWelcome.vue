@@ -10,6 +10,7 @@ function chooseFile(name : string) {
 
 onMounted(()=>{
   MunddrikStore.loadDataFiles();
+  console.log("loaded")
 })
 </script>
 
