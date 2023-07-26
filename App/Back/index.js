@@ -54,7 +54,7 @@ app.get('/getFiles', (req, res) => {
             const FileName = file;
             nameArray.push(FileName);
         })
-        const retVal = JSON.stringify(nameArray);
+        const retVal = nameArray;
         res.status(200).send({
             files: retVal
         })
@@ -62,20 +62,30 @@ app.get('/getFiles', (req, res) => {
 
 })
 
-app.post('/getFile/:name', (req, res) => {
+app.get('/getFile/:name', (req, res) => {
     const { name } = req.params;
-    let jsonRes = JSON.obj;
+    name.replace('%', ' ');
+    let jsonRes = {};
     fs.readdir(folders, (err, files) =>{
         files.forEach(file => {
-
-            if(file==name){
+            const substr = file.split('.')[0];
+            if(name == substr){
                 const tsvFile = fs.readFileSync("./files/"+file)
                 jsonRes = tsvJSON(tsvFile.toString());
             }
         })
-        res.status(200).send({
-            data: jsonRes
-        })
+        if(Object.keys(jsonRes).length != 0)
+        {
+            res.status(200).send({
+                data: jsonRes
+            })
+        }
+        else{
+            res.status(404).send({
+                data: 'Not Found'
+            })
+        }
+
     })
 })
 

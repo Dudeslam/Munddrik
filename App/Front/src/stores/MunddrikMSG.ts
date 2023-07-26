@@ -25,23 +25,27 @@ export const useMunddrikStore = defineStore({
   actions: {
     async loadDataFiles() {
       await axios.get("http://localhost:8080/getFiles").then((resp)=> {
-        let csv = resp.data;
-        csv.forEach((element: { [s: string]: unknown; } | ArrayLike<unknown>) => {
-          this.Files.push(Object.values(element).toString());
+        let csv = resp.data.files;
+        csv.forEach((element: string) => {
+          const substr = element.split('.')[0];
+          this.Files.push(substr);
         });
       })
     },
     async loadFile(name: string){
       await axios.get(`http://localhost:8080/getFile/${name}`).then((resp)=>{
-        let data = resp.data;
-        this.MsgSize = data.length;
-        data.forEach((element: ArrayLike<unknown> | { [s: string]: unknown; }) =>{
-          this.AllMessage.push(Object.values(element).toString());
-        })
-        if (this.first) {
-          this.roll();
-          this.first = false;
+        let data = resp.data.data;
+        if(data != "Not Found"){
+          this.MsgSize = data.length;
+          data.forEach((element: ArrayLike<unknown> | { [s: string]: unknown; }) =>{
+            this.AllMessage.push(Object.values(element).toString());
+          })
+          if (this.first) {
+            this.roll();
+            this.first = false;
+          }
         }
+        this.loadDataFiles();
       })
     },    
     roll() {

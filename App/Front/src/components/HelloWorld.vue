@@ -55,7 +55,8 @@ h3 {
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
-
+  font-size: 30px;
+  width: max-content;
 }
 
 @media (min-width: 1024px) {

@@ -19,8 +19,8 @@ onMounted(()=>{
     <div v-if="MunddrikStore.Message" class="row">
       <h1>{{MunddrikStore.Message}}</h1>
     </div>
-    <div v-else>
-      <button class="tsvChoice" v-for="file in MunddrikStore.Files" :v-click='chooseFile(file)'>{{ file }}</button>
+    <div class="row" v-else>
+      <button class="tsvChoice" v-for="file in MunddrikStore.Files" @click.stop='chooseFile(file)'>{{ file }}</button>
     </div>
   </div>
 </template>
@@ -32,15 +32,22 @@ onMounted(()=>{
   border: 0.2rem solid black;
 }
 
+.row{
+  justify-content: space-between;
+}
+
 .tsvChoice{
-  width: fit-content;
-  border: black 1px solid;
-  background-color: white;
-  :hover{
-    transition: 0.5s;
-    background-color: rgb(0, 255, 147);
-    // color: black;
-  }
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border: 2px solid black;
+
 }
 
 .row{
