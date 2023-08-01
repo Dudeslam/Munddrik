@@ -1,0 +1,4 @@
+to run
+
+    kubectl port-forward service/{{.Values.frontName}} 8081:8081 --namespace {{.Values.Namespace}}
+    kubectl port-forward service/{{.Values.backName}} 8080:8080 --namespace {{.Values.Namespace}}

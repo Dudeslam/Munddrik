@@ -4,7 +4,7 @@ frontName: frontend
 backContainerName: backend-container
 frontContainerName: frontend-container
 
-Namespace: default
+Namespace: dev
 
 configmap:
   name: Munddrik
