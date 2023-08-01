@@ -1,0 +1,5 @@
+backName: backend
+frontName: frontend
+
+backContainerName: backend-container
+frontContainerName: frontend-container
