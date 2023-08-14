@@ -43,8 +43,10 @@ export const useMunddrikStore = defineStore({
           if (this.first) {
             this.roll();
             this.first = false;
+
           }
-        }
+        }            
+        this.Files=[]
         this.loadDataFiles();
       })
     },    

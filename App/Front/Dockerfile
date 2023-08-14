@@ -13,4 +13,4 @@ RUN npm ci
 EXPOSE 8081
 # RUN npm run build
 # Command to run our app
-CMD [ "npm", "run", "dev"]
+CMD [ "npm", "run", "build"]

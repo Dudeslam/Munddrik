@@ -15,7 +15,7 @@ defineProps<{
   <div class="greetings">
     <a type="button" class="btn" onmouseover="" @click="MunddrikStore.haeld"><DrinkIcon/></a>  
     <h1 class="green">{{ msg }}</h1>
-    <button type="button" onmouseover="" class="btn" @click="MunddrikStore.roll"><refreshIcon/></button>
+    <button type="button" onmouseover="" class="btn" @click.stop="MunddrikStore.roll"><refreshIcon/></button>
   </div>
   <h3>
       Drikke spillet hvor man hælder i munden eller laver noget andet!

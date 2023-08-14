@@ -9,3 +9,6 @@ https://www.squadcast.com/blog/install-prometheus-kubernetes
 ## Prometheus Values and configs
 create value.yaml file
 ### use commands: 'helm upgrade -f new_values.yml [your_release_name] prometheus-community/prometheus'
+
+helm install prometheus
+helm install grafana
