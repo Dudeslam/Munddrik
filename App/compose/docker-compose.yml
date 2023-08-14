@@ -9,9 +9,9 @@ services:
     restart: always # What to do if container crashes
     links:
       - backend
-    # volumes: 
-    #   - .:/usr/src/app/frontend
-    #   - /usr/src/app/node_modules
+    volumes: 
+      - ../Front/:/usr/src/app
+      - /usr/src/app/node_modules
     environment: 
     - CHOKIDAR_USEPOLLING=true
     tty: true
