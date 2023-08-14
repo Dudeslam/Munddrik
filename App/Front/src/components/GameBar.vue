@@ -17,7 +17,7 @@ defineProps<{
     <h1 class="green">{{ msg }}</h1>
     <button type="button" onmouseover="" class="btn" @click.stop="MunddrikStore.roll"><refreshIcon/></button>
   </div>
-  <h3>
+  <h3 class="pt-5">
       Drikke spillet hvor man hælder i munden eller laver noget andet!
     </h3>
 </template>
@@ -45,19 +45,7 @@ h3 {
   display: inline-block;
 }
 
-.btn{
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  font-size: 30px;
-  width: max-content;
-}
+
 
 @media (min-width: 1024px) {
   .greetings h1,

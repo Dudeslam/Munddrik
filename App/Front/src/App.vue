@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import GameBar from './components/GameBar.vue';
+import './tailwind.css'
 
 </script>
 
