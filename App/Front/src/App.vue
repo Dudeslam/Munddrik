@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import GameBar from './components/GameBar.vue';
 
 </script>
 
 <template>
   <div class="wrapper">
-      <HelloWorld msg="Munddrik" />
+      <GameBar msg="Munddrik" />
     </div>
     <div class="center">
   </div>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import MessageBox from './MessageBox.vue';
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <MessageBox />
   </main>
 </template>
