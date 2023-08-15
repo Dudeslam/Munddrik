@@ -2,11 +2,10 @@
 import refreshIcon from "./icons/refreshIcon.vue"
 import DrinkIcon from "./icons/DrinkIcon.vue"
 import { useMunddrikStore } from "../stores/MunddrikMSG.ts";
+import MessageBox from "./MessageBox.vue";
 
 const MunddrikStore = useMunddrikStore();
-defineProps<{
-  msg: string
-}>()
+
 
 
 </script>
@@ -14,12 +13,13 @@ defineProps<{
 <template>
   <div class="greetings">
     <a type="button" class="btn" onmouseover="" @click="MunddrikStore.haeld"><DrinkIcon/></a>  
-    <h1 class="green">{{ msg }}</h1>
+    <h1 class="green">Munddrik</h1>
     <button type="button" onmouseover="" class="btn" @click.stop="MunddrikStore.roll"><refreshIcon/></button>
   </div>
   <h3 class="pt-5">
       Drikke spillet hvor man hælder i munden eller laver noget andet!
     </h3>
+    <MessageBox></MessageBox>
 </template>
 
 <style scoped>

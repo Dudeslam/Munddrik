@@ -33,6 +33,9 @@ export const useMunddrikStore = defineStore({
       })
     },
     async loadFile(name: string){
+      if(this.AllMessage){
+        this.AllMessage=[];
+      }
       await axios.get(`http://localhost:8080/getFile/${name}`).then((resp)=>{
         let data = resp.data.data;
         if(data != "Not Found"){
@@ -43,10 +46,9 @@ export const useMunddrikStore = defineStore({
           if (this.first) {
             this.roll();
             this.first = false;
-
           }
-        }            
-        this.Files=[]
+        }
+        this.Files=[];
         this.loadDataFiles();
       })
     },    
@@ -54,9 +56,14 @@ export const useMunddrikStore = defineStore({
       const rand = Math.round(Math.random() * this.AllMessage.length);
       this.Message = this.AllMessage[rand];
       this.UsedMsg.push(this.AllMessage[rand]);
-      delete this.AllMessage[rand];
-      if(this.UsedMsg.length >= this.MsgSize/2){
-        this.AllMessage = this.AllMessage.concat(this.UsedMsg);
+      this.AllMessage.splice(rand, 1);
+      if(!this.Message)
+      {
+        this.roll();
+      }
+      if(this.UsedMsg.length >= (this.MsgSize * 2) / 3){
+        this.AllMessage.push(...this.UsedMsg);
+        this.UsedMsg=[];
       }
     },
     haeld() {
