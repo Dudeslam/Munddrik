@@ -1,5 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import  {useCookies}  from "vue3-cookies";
 axios.defaults.withCredentials = false;
 export interface msg {
   Message: string;
@@ -8,8 +9,10 @@ export interface msg {
   UsedMsg: string[];
   Files: string[];
   MsgSize: number;
-  first: boolean;
+  First: boolean;
+  CurrentFile: string;
 }
+const $cookies = useCookies();
 
 export const useMunddrikStore = defineStore({
   id: "Munddrik",
@@ -20,7 +23,8 @@ export const useMunddrikStore = defineStore({
     Files: [],
     MsgSize: 0,
     Munddrik: ["Bund din drik!!!!", "Du vælger en som skal bunde!!!!"],
-    first: true,
+    First: true,
+    CurrentFile: "",
   }),
   actions: {
     async loadDataFiles() {
@@ -31,6 +35,15 @@ export const useMunddrikStore = defineStore({
           this.Files.push(substr);
         });
       })
+    },
+    loadCookie(){
+      const cookieSet = $cookies?.cookies.get("MsgFile")
+      if(cookieSet) {
+        this.loadFile(cookieSet);
+      }
+      else{
+        this.loadDataFiles();
+      }
     },
     async loadFile(name: string){
       if(this.AllMessage){
@@ -43,10 +56,14 @@ export const useMunddrikStore = defineStore({
           data.forEach((element: ArrayLike<unknown> | { [s: string]: unknown; }) =>{
             this.AllMessage.push(Object.values(element).toString());
           })
-          if (this.first) {
+          this.CurrentFile = name
+          if (this.First) {
             this.roll();
-            this.first = false;
+            this.First = false;
           }
+          console.log("set Cookie")
+
+          $cookies?.cookies.set("MsgFile", name, '7d')
         }
         this.Files=[];
         this.loadDataFiles();

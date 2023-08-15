@@ -8,6 +8,7 @@ COPY . /usr/src/app
 WORKDIR /usr/src/app
 # Copy package json and install dependencies
 RUN npm ci
+RUN npm install vue3-cookies --save
 
 # Expose port to access server
 EXPOSE 8081
