@@ -89,6 +89,14 @@ app.get('/getFile/:name', (req, res) => {
     })
 })
 
+app.post('/saveEdits', (req, res) => {
+    const data = req.body;
+    res.status(200).send({
+        data: true
+    })
+})
+
+
 function tsvJSON(tsv) {
     const lines = tsv.split("\n");
     const result = [];

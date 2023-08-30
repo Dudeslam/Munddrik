@@ -10,7 +10,6 @@ function chooseFile(name : string) {
 onMounted(()=>{
   MunddrikStore.Files=[];
   MunddrikStore.loadCookie();
-  console.log("loaded")
 })
 </script>
 

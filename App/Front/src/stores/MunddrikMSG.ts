@@ -1,16 +1,18 @@
-import axios from "axios";
 import { defineStore } from "pinia";
 import  {useCookies}  from "vue3-cookies";
-axios.defaults.withCredentials = false;
+import { instance } from '../network/network.ts'
+import { message } from "../objects/message.ts";
+
 export interface msg {
   Message: string;
-  AllMessage: string[];
+  AllMessage: message[];
   Munddrik: string[];
-  UsedMsg: string[];
+  UsedMsg: message[];
   Files: string[];
   MsgSize: number;
   First: boolean;
   CurrentFile: string;
+  Saved: boolean;
 }
 const $cookies = useCookies();
 
@@ -25,10 +27,11 @@ export const useMunddrikStore = defineStore({
     Munddrik: ["Bund din drik!!!!", "Du vælger en som skal bunde!!!!"],
     First: true,
     CurrentFile: "",
+    Saved: false,
   }),
   actions: {
     async loadDataFiles() {
-      await axios.get("http://localhost:8080/getFiles").then((resp)=> {
+      await instance.get("/getFiles").then((resp)=> {
         let csv = resp.data.files;
         csv.forEach((element: string) => {
           const substr = element.split('.')[0];
@@ -47,31 +50,62 @@ export const useMunddrikStore = defineStore({
     },
     async loadFile(name: string){
       if(this.AllMessage){
-        this.AllMessage=[];
+        this.AllMessage= [];
       }
-      await axios.get(`http://localhost:8080/getFile/${name}`).then((resp)=>{
+      await instance.get(`/getFile/${name}`).then((resp)=>{
         let data = resp.data.data;
         if(data != "Not Found"){
           this.MsgSize = data.length;
+          let index=0;
           data.forEach((element: ArrayLike<unknown> | { [s: string]: unknown; }) =>{
-            this.AllMessage.push(Object.values(element).toString());
+            let pushMsg: message = {id: 0, value: ""};
+            pushMsg.id=index;
+            pushMsg.value = Object.values(element).toString();
+            this.AllMessage.push(pushMsg);
+            index++;
           })
           this.CurrentFile = name
           if (this.First) {
             this.roll();
             this.First = false;
           }
-          console.log("set Cookie")
 
           $cookies?.cookies.set("MsgFile", name, '7d')
         }
         this.Files=[];
         this.loadDataFiles();
       })
-    },    
+    },   
+    async EditFile(name: string) {
+      if(this.AllMessage){
+        this.AllMessage= [];
+      }
+      await instance.get(`/getFile/${name}`).then((resp)=>{
+        let data = resp.data.data;
+        if(data != "Not Found"){
+          this.MsgSize = data.length;
+          let index=0;
+          data.forEach((element: ArrayLike<unknown> | { [s: string]: unknown; }) =>{
+            let pushMsg: message = {id: 0, value: ""};
+            pushMsg.id=index;
+            pushMsg.value = Object.values(element).toString();
+            this.AllMessage.push(pushMsg);
+            index++;
+          })}
+      })
+    },
+    async SaveEdits(){
+      let saveState = false;
+      await instance.post(`/saveEdits`, {
+        data: this.AllMessage,
+      }).then((resp) => {
+        saveState = resp.data.data;
+      })
+      return saveState;
+    },
     roll() {
       const rand = Math.round(Math.random() * this.AllMessage.length);
-      this.Message = this.AllMessage[rand];
+      this.Message = this.AllMessage[rand].value == null ? "" : this.AllMessage[rand].value as string;
       this.UsedMsg.push(this.AllMessage[rand]);
       this.AllMessage.splice(rand, 1);
       if(!this.Message)

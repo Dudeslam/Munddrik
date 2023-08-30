@@ -3,10 +3,16 @@ import refreshIcon from "./icons/refreshIcon.vue"
 import DrinkIcon from "./icons/DrinkIcon.vue"
 import { useMunddrikStore } from "../stores/MunddrikMSG.ts";
 import MessageBox from "./MessageBox.vue";
+import { onMounted } from "vue";
+import router from "../router";
 
 const MunddrikStore = useMunddrikStore();
 
-
+onMounted(()=>{
+  if(!MunddrikStore.AllMessage.length){
+    router.push({path: '/'})
+  }
+});
 
 </script>
 

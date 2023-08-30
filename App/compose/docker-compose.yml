@@ -14,6 +14,8 @@ services:
       - /usr/src/app/node_modules
     environment: 
     - CHOKIDAR_USEPOLLING=true
+    env_file:
+      - .env.prod
     tty: true
 
   backend:
@@ -33,6 +35,8 @@ services:
       - nodemon 
       - --inspect=0.0.0.0:9229
       - index.js
+    env_file:
+      - .env.prod
     tty: true
     # links: 
     #   - db
