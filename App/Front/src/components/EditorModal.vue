@@ -9,6 +9,7 @@ const Munddrikstore = useMunddrikStore();
 
 const isOpen = ref(false);
 const isSaved = ref(false)
+const newAdd = ref("");
 let Edit: message[];
 
 const props = withDefaults(defineProps<{
@@ -28,9 +29,24 @@ function openEditor(file: string) {
 }
 
 async function saveEdits() {
-  if(await Munddrikstore.SaveEdits()){
-    isSaved.value = true;
+  if(!newAdd.value){
+    if(await Munddrikstore.SaveEdits(props.title)){
+      isSaved.value = true;
+    }
   }
+  else{
+    addToMessage()
+    saveEdits()
+  }
+}
+
+const addToMessage = () => {
+  Munddrikstore.AllMessage.push({id: Munddrikstore.MsgSize, value: newAdd.value as string | null})
+  newAdd.value = "";
+}
+
+const deleteMessage = (index: number) => {
+  Munddrikstore.removeMsg(index);
 }
 
 function close() {
@@ -50,7 +66,7 @@ function close() {
         <div class="overflow-scroll fixed left-[8%] right-2/4 bottom-[10%] h-4/5 w-10/12 bg-white md:rounded">
           <div class="sticky top-0 px-4 py-4 leading-none flex justify-between items-center font-medium text-sm bg-gray-100 border-b select-none">
             <h3>{{ props.title }}</h3>
-            <span v-if="isSaved" class="font-bold text-green-600">Successfully saved</span>
+            <span v-if="isSaved" class="font-bold text-green-600">Saved Succesfully</span>
             <div class="space-x-4 items-center flex">
             <button class="modalBtn ps-7" @click="saveEdits()"><SaveIcon></SaveIcon></button>
             <button @click="close()" class="modalBtn ps-6">
@@ -62,9 +78,14 @@ function close() {
           <div class="px-4 py-4">
             <div class="max-h-fit">
               <form >
-                <div v-for="Edit in Munddrikstore.AllMessage" class="grid grid-flow-col justify-stretch">
-                <h3 class="border-2 border-e-gray-200 border-gray-600 col-span-1 mt-4">{{ Edit.id }}</h3>
-                <input class="border-2 border-s-gray-200 border-gray-600 col-span-11 w-full mt-4" type="text" @id="Edit.id" v-model="Edit.value">
+                <div class="grid grid-flow-col justify-stretch border-b-2 pb-4 border-black">
+                  <textarea class="border-2 border-gray-600  col-span-11 focus:outline-0 focus:h-20 resize-none h-7" placeholder="Add new entry" v-model="newAdd"></textarea>
+                  <button class="formBtn" @click.prevent="addToMessage">+</button>
+                </div>
+                <div v-for="Edit in Munddrikstore.AllMessage" class="grid grid-flow-col justify-stretch mt-4">
+                  <h3 class="fields col-span-1 mt-3">{{ Edit.id }}</h3>
+                  <textarea class="fields focus:outline-0 focus:h-20 focus:overflow-scroll col-span-10 w-full h-7 mt-3 resize-none overflow-hidden" type="text" :key="Edit.id" v-model="(Edit.value as string)"></textarea>
+                  <button class="formBtn mt-3" @click.prevent="deleteMessage(Edit.id)">x</button>
                 </div>
               </form>
             </div>
@@ -82,5 +103,13 @@ function close() {
 <style scoped lang="scss">
 .modalBtn{
   @apply border-black border-2 w-24 h-12 text-lg bg-green-600;
+}
+
+.formBtn{
+  @apply border-black border-2 bg-green-600;
+}
+
+.fields{
+  @apply border-2 border-e-gray-200 border-gray-600;
 }
 </style>

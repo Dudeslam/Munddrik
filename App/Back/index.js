@@ -90,7 +90,14 @@ app.get('/getFile/:name', (req, res) => {
 })
 
 app.post('/saveEdits', (req, res) => {
-    const data = req.body;
+    const file = req.body.file;
+    const data = req.body.data;
+    let jsonRes = []
+    data.forEach(string => {
+        jsonRes.push(string.value)
+    })
+    jsonRes.join("\t")
+    fs.writeFileSync("./files/"+file+".tsv", jsonRes.join("\n"));
     res.status(200).send({
         data: true
     })
@@ -102,14 +109,13 @@ function tsvJSON(tsv) {
     const result = [];
     const headers = lines[0].split("\t");
   
-    for (let i = 1; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
       const obj = {};
       const currentline = lines[i].split("\t");
-  
       for (let j = 0; j < headers.length; j++) {
         obj[headers[j]] = currentline[j];
+
       }
-  
       result.push(obj);
     }
   

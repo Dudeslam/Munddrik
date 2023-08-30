@@ -94,9 +94,18 @@ export const useMunddrikStore = defineStore({
           })}
       })
     },
-    async SaveEdits(){
+    removeMsg(id: number){
+      this.AllMessage.splice(id, 1);
+      this.AllMessage.forEach(msg => {
+        if(msg.id >= id){
+          msg.id -= 1;
+        }
+      })
+    },
+    async SaveEdits(name: string){
       let saveState = false;
       await instance.post(`/saveEdits`, {
+        file: name,
         data: this.AllMessage,
       }).then((resp) => {
         saveState = resp.data.data;
